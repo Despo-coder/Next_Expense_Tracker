@@ -1,10 +1,13 @@
-import Image from "next/image";
-import styles from "./page.module.css";
 
-export default function Home() {
+
+const Homepage = () => {
   return (
-   <>
-   <p>Hello World</p>
-   </>
-  );
+    <div>
+      <main>
+        <h1>Expense Tracker</h1>
+      </main>
+    </div>
+  )
 }
+
+export default Homepage
