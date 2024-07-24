@@ -1,12 +1,8 @@
 import getIncomeExpense from '@/app/actions/getIncomeExpense';
 import { addCommas } from '@/assets/utility/addCommas';
 
-
 const IncomeExpense = async () => {
-const { income, expense } = await getIncomeExpense();
-
-
-
+  const { income, expense } = await getIncomeExpense();
 
   return (
     <div className='inc-exp-container'>
@@ -18,7 +14,6 @@ const { income, expense } = await getIncomeExpense();
         <h4>Expense</h4>
         <p className='money minus'>${addCommas(Number(expense?.toFixed(2)))}.00</p>
       </div>
-      
     </div>
   );
 };

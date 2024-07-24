@@ -39,6 +39,7 @@ model Transaction {
   text        String
   amount      Float
   paymentType String
+  transactionType String
   createdAt   DateTime @default(now())
   user        User     @relation(fields: [userId], references: [clerkId], onDelete: Cascade)
   userId      String

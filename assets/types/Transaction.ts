@@ -3,6 +3,7 @@ export interface Transaction {
     text: string;
     amount: number;
     paymentType:string;
+    transactionType:string;
     userId: string;
     createdAt: Date;
   }
