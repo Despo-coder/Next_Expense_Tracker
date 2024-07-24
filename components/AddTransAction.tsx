@@ -6,12 +6,34 @@ import { useRef, useState } from 'react'
 
 const AddTransAction = () => {
 const [transactionType, setTransactionType] = useState('expense');
+
+const paymentTypes = [
+  'Cash', 
+  'Credit Card', 
+  'Debit Card', 
+  'Bank Transfer', 
+  'Mobile Payment'
+];
+const predefinedExpenses = [
+  'Transportation',
+  'Food',
+  'Housing',
+  'Utilities',
+  'Insurance',
+  'Healthcare',
+  'Savings',
+  'Personal',
+  'Entertainment',
+  'Other'
+];
+
  
 const formRef = useRef<HTMLFormElement>(null)
+
 const clientAction = async(formData:FormData) => {
 const result = await addTransaction(formData)
 if(result.error){
-    console.log(result.error)
+   toast.error(result.error)
     }else{
 toast.success('Transaction Added')
 formRef.current?.reset()
@@ -34,11 +56,28 @@ formRef.current?.reset()
   </select>
 </div>
 
-        <div className="form-control">
-            <label htmlFor="text">
-                <input type="text" name='text' placeholder='enter text'/>
-            </label>
-        </div>
+<div className="form-control">
+  <label htmlFor="text">Category
+    <select name="text">
+      {predefinedExpenses.map((expense) => (
+        <option key={expense} value={expense}>{expense}</option>
+      ))}
+    </select>
+  </label>
+</div>
+
+<div className="form-control">
+  <label htmlFor="paymentType">Payment Type
+    <select name="paymentType">
+      {paymentTypes.map((type) => (
+        <option key={type} value={type}>{type}</option>
+      ))}
+    </select>
+  </label>
+</div>
+
+
+
         <div className="form-control">
   <label htmlFor="amount">Amount
     <input 

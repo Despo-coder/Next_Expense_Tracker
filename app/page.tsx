@@ -4,6 +4,8 @@ import AddTransAction from "@/components/AddTransAction"
 import Balance from "@/components/Balance"
 import IncomeExpense from "@/components/IncomeExpense"
 import TransactionList from "@/components/TransactionList"
+import ClientIncomeExpense from "@/components/ClientIncomeExpense"
+
 
 const Homepage = async() => {
   const user = await currentUser()
@@ -19,6 +21,7 @@ const Homepage = async() => {
         <IncomeExpense />
         <AddTransAction />
         <TransactionList />
+        <ClientIncomeExpense />
       </main>
     </div>
   )

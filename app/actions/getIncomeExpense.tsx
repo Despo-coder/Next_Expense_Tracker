@@ -1,10 +1,12 @@
 'use server';
 import { db } from '@/assets/utility/db';
 import { auth } from '@clerk/nextjs/server';
+import { revalidatePath } from 'next/cache';
 
 async function getIncomeExpense(): Promise<{
   income?: number;
   expense?: number;
+  categoryBreakdown?: Record<string, number>;
   error?: string;
 }> {
   const { userId } = auth();
@@ -18,17 +20,25 @@ async function getIncomeExpense(): Promise<{
       where: { userId },
     });
 
-    const amounts = transactions.map((transaction) => transaction.amount);
+    const income = transactions
+      .filter((transaction) => transaction.amount > 0)
+      .reduce((acc, transaction) => acc + transaction.amount, 0);
 
-    const income = amounts
-      .filter((item) => item > 0)
-      .reduce((acc, item) => acc + item, 0);
+    const expense = Math.abs(transactions
+      .filter((transaction) => transaction.amount < 0)
+      .reduce((acc, transaction) => acc + transaction.amount, 0));
 
-    const expense = amounts
-      .filter((item) => item < 0)
-      .reduce((acc, item) => acc + item, 0);
+    const categoryBreakdown = transactions.reduce((acc, transaction) => {
+      const category = transaction.text;
+      if (!acc[category]) {
+        acc[category] = 0;
+      }
+      acc[category] += Math.abs(transaction.amount);
+      return acc;
+    }, {} as Record<string, number>);
 
-    return { income, expense: Math.abs(expense) };
+    return { income, expense, categoryBreakdown };
+    
   } catch (error) {
     return { error: 'Database error' };
   }

@@ -2,6 +2,7 @@ import getTransactions from '@/app/actions/getTransactions';
 import TransactionItem from './TransActionItem';
 import { Transaction } from '@/assets/types/Transaction';
 const TransactionList = async () => {
+
   const { transactions, error } = await getTransactions();
 
   if (error) {

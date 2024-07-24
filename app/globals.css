@@ -25,6 +25,11 @@ body {
   align-items: center;
   justify-content: center;
 }
+.chart-container {
+  height: 300px;
+  width: 100%;
+}
+
 
 .navbar {
   background: #000;

@@ -8,6 +8,7 @@ interface TransactionData {
 
     text: string;
     amount: number;
+    paymentType: string;
 }
 
 interface TransactionResponse {
@@ -15,40 +16,40 @@ interface TransactionResponse {
     error?: string;
 }
 
+
 async function addTransaction(formData: FormData): Promise<TransactionResponse> {
     const textValue = formData.get('text');
     const amountValue = formData.get('amount');
+    const paymentTypeValue = formData.get('paymentType');
 
-    if (!textValue || !amountValue) {
-        return { error: 'Please provide text and amount' };
+    if (!textValue || !amountValue || !paymentTypeValue) {
+        return { error: 'Category, Amount, and Payment Type Needed.' };
     }
 
     const text: string = textValue.toString();
     const amount: number = parseFloat(amountValue.toString());
+    const paymentType: string = paymentTypeValue.toString();
 
     const {userId} = auth()
-   if(!userId){
-       return {error: 'User not found'}
-   }
-try {
-    const transactionData : TransactionData = await db.transaction.create({
-        data: {
-            text,
-            amount,
-            userId
-        }
-    
-    })
-    revalidatePath('/')
+    if(!userId){
+        return {error: 'User not found'}
+    }
+    try {
+        const transactionData : TransactionData = await db.transaction.create({
+            data: {
+                text,
+                amount,
+                paymentType,
+                userId
+            }
+        })
+        revalidatePath('/')
 
-    return { data: transactionData };
-    
-} catch (error) {
-    return { error: 'Error adding transaction' };
-}
-
-
-   
+        return { data: transactionData };
+        
+    } catch (error) {
+        return { error: 'Error adding transaction' };
+    }
 }
 
 export default addTransaction;
